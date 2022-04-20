@@ -43,6 +43,11 @@ class TodoList
         return $this;
     }
 
+    public function countTasks(): int
+    {
+        return $this->tasks->count();
+    }
+
     /**
      * @return Collection<int, Task>
      */
