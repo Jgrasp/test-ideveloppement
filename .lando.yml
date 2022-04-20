@@ -1,0 +1,37 @@
+name: ideveloppement-test
+recipe: symfony
+config:
+  webroot: public
+  php: 8.1
+  composer_version: 2-latest
+  via: apache:2.4
+  xdebug: true
+
+services:
+  appserver:
+    scanner: false
+  database:
+    scanner: false
+    type: mariadb:10.3
+    portforward: 49200
+  node:
+    type: node:14
+    globals:
+      gulp-cli: "latest"
+      yarn: "latest"
+tooling:
+  symfony:
+    service: appserver
+    description: Run Symfony commands
+    cmd:
+      - bin/console
+  npm:
+    service: node
+  gulp:
+    service: node
+  yarn:
+    service: node
+  cache:
+    service: appserver
+    cmd:
+      - bin/console cache:clear
