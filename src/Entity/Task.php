@@ -19,6 +19,10 @@ class Task
     #[ORM\Column(type: 'boolean')]
     private $done;
 
+    #[ORM\ManyToOne(targetEntity: TodoList::class, inversedBy: 'tasks')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $list;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +48,18 @@ class Task
     public function setDone(bool $done): self
     {
         $this->done = $done;
+
+        return $this;
+    }
+
+    public function getList(): ?TodoList
+    {
+        return $this->list;
+    }
+
+    public function setList(?TodoList $list): self
+    {
+        $this->list = $list;
 
         return $this;
     }
