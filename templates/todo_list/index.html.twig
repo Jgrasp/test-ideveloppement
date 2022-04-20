@@ -22,7 +22,8 @@
                 <td>{{ todoList.countTasks }}</td>
                 <td>
                     <a href="{{ path('app_todo_list_show', {'id': todoList.id}) }}">show</a>
-                    <a href="{{ path('app_todo_list_edit', {'id': todoList.id}) }}">edit</a>
+
+                    {{ include('todo_list/_delete_form.html.twig') }}
                 </td>
             </tr>
         {% else %}

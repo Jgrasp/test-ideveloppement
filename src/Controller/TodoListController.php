@@ -30,11 +30,11 @@ class TodoListController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $todoListRepository->add($todoList);
-            return $this->redirectToRoute('app_todo_list_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_todo_list_show', ['id' => $todoList->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('todo_list/new.html.twig', [
-            'todo_list' => $todoList,
+            'todoList' => $todoList,
             'form' => $form,
         ]);
     }
@@ -43,7 +43,7 @@ class TodoListController extends AbstractController
     public function show(TodoList $todoList): Response
     {
         return $this->render('todo_list/show.html.twig', [
-            'todo_list' => $todoList,
+            'todoList' => $todoList,
         ]);
     }
 
@@ -59,7 +59,7 @@ class TodoListController extends AbstractController
         }
 
         return $this->renderForm('todo_list/edit.html.twig', [
-            'todo_list' => $todoList,
+            'todoList' => $todoList,
             'form' => $form,
         ]);
     }

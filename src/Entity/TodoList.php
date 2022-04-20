@@ -6,8 +6,10 @@ use App\Repository\TodoListRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: TodoListRepository::class)]
+#[UniqueEntity(fields: ['name'])]
 class TodoList
 {
     #[ORM\Id]
