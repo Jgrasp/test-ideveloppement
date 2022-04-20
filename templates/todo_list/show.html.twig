@@ -5,20 +5,27 @@
 {% block body %}
     <h1>TodoList</h1>
 
+    {{ form_start(form) }}
+    {{ form_row(form.name) }}
+    <button class="btn">{{ button_label|default('Save') }}</button>
+    {{ form_end(form) }}
+
+
     <table class="table">
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ todoList.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ todoList.name }}</td>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <td>{{ todoList.id }}</td>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <td>{{ todoList.name }}</td>
+        </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('app_todo_list_index') }}">back to list</a>
 
     <a href="{{ path('app_todo_list_edit', {'id': todoList.id}) }}">edit</a>
+
+    <a href="{{ path('app_todo_list_index') }}">back to list</a>
 {% endblock %}

@@ -42,8 +42,11 @@ class TodoListController extends AbstractController
     #[Route('/{id}', name: 'app_todo_list_show', methods: ['GET'])]
     public function show(TodoList $todoList): Response
     {
-        return $this->render('todo_list/show.html.twig', [
+        $form = $this->createForm(TodoListType::class, $todoList, ['action' => $this->generateUrl('app_todo_list_edit', ['id' => $todoList->getId()])]);
+
+        return $this->renderForm('todo_list/show.html.twig', [
             'todoList' => $todoList,
+            'form' => $form
         ]);
     }
 
@@ -55,7 +58,7 @@ class TodoListController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $todoListRepository->add($todoList);
-            return $this->redirectToRoute('app_todo_list_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_todo_list_show', ['id' => $todoList->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('todo_list/edit.html.twig', [
