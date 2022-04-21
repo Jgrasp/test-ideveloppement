@@ -13,9 +13,7 @@ class TaskType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('done')
-            ->add('list')
-        ;
+            ->add('done');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

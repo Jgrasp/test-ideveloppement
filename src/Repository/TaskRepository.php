@@ -3,10 +3,12 @@
 namespace App\Repository;
 
 use App\Entity\Task;
+use App\Entity\TodoList;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @method Task|null find($id, $lockMode = null, $lockVersion = null)
@@ -43,6 +45,18 @@ class TaskRepository extends ServiceEntityRepository
         if ($flush) {
             $this->_em->flush();
         }
+    }
+
+    public function removeDoneByList(TodoList $list): void
+    {
+        $queryBuilder = $this->createQueryBuilder('task');
+
+        $queryBuilder
+            ->delete()
+            ->where($queryBuilder->expr()->eq('task.done', true))
+            ->andWhere($queryBuilder->expr()->eq('task.list', $list->getId()));
+
+        $queryBuilder->getQuery()->execute();
     }
 
     // /**

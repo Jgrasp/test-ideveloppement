@@ -24,8 +24,54 @@
         </tbody>
     </table>
 
+    <h1>Task index</h1>
 
-    <a href="{{ path('app_todo_list_edit', {'id': todoList.id}) }}">edit</a>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Done</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for task in todoList.tasks %}
+            <tr>
+                <td>{{ task.id }}</td>
+                <td>{{ task.title }}</td>
+                <td>{{ task.done ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('app_task_edit', {'list': task.list.id, 'id': task.id}) }}">edit</a>
+                    <form method="post"
+                          action="{{ path('app_task_toggle_done', {'list': task.list.id, 'id': task.id}) }}">
+                        <input name="_method" value="PUT" type="hidden">
+                        <input type="hidden" name="_token" value="{{ csrf_token('toggleDone' ~ task.id) }}">
+                        <button type="submit">
+                            {% if task.done %}
+                                Mark as 'Todo'
+                            {% else %}
+                                Mark as 'Done'
+                            {% endif %}
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_task_new', { 'list' : todoList.id}) }}">Create new</a>
+
+    <form method="post" action="{{ path('app_todo_list_delete_task_done', {'id': todoList.id}) }}">
+        <input name="_method" value="DELETE" type="hidden">
+        <input type="hidden" name="_token" value="{{ csrf_token('deleteDoneTasks') }}">
+        <button type="submit">Remove done tasks</button>
+    </form>
 
     <a href="{{ path('app_todo_list_index') }}">back to list</a>
 {% endblock %}

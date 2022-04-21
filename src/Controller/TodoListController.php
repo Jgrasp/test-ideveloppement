@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\TodoList;
 use App\Form\TodoListType;
+use App\Repository\TaskRepository;
 use App\Repository\TodoListRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -75,5 +76,15 @@ class TodoListController extends AbstractController
         }
 
         return $this->redirectToRoute('app_todo_list_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/task/done', name: 'app_todo_list_delete_task_done', methods: ['DELETE'])]
+    public function deleteDoneTasks(Request $request, TodoList $todoList, TaskRepository $taskRepository): Response
+    {
+        if ($this->isCsrfTokenValid('deleteDoneTasks', $request->request->get('_token'))) {
+            $taskRepository->removeDoneByList($todoList);
+        }
+
+        return $this->redirectToRoute('app_todo_list_show', ['id' => $todoList->getId()], Response::HTTP_SEE_OTHER);
     }
 }
