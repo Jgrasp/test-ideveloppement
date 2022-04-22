@@ -1,38 +1,43 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}TodoList index{% endblock %}
+{% block title %}{{ 'app.todo_list.title'|trans }}{% endblock %}
 
 {% block body %}
-    <h1>TodoList index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Tasks</th>
-                <th>actions</th>
-            </tr>
+    <div class="flex justify-end">
+        <a class="font-bold py-2 px-4 rounded bg-green-700 hover:bg-green-800 text-white"
+           href="{{ path('app_todo_list_new') }}">{{ 'app.todo_list.new_action'|trans }}</a>
+    </div>
+
+    <table class="min-w-full text-center mt-8">
+        <thead class="border-b bg-blue-400">
+        <tr>
+            <th scope="col" class="text-sm font-medium text-white px-6 py-4">{{ 'app.todo_list.id'|trans }}</th>
+            <th scope="col" class="text-sm font-medium text-white px-6 py-4">{{ 'app.todo_list.name'|trans }}</th>
+            <th scope="col" class="text-sm font-medium text-white px-6 py-4">{{ 'app.todo_list.tasks_number'|trans }}</th>
+            <th scope="col" class="text-sm font-medium text-white px-6 py-4">{{ 'app.todo_list.options'|trans }}</th>
+        </tr>
         </thead>
-        <tbody>
+        <tbody class="border-b">
         {% for todoList in todoLists %}
-            <tr>
-                <td>{{ todoList.id }}</td>
-                <td>{{ todoList.name }}</td>
-                <td>{{ todoList.countTasks }}</td>
-                <td>
-                    <a href="{{ path('app_todo_list_show', {'id': todoList.id}) }}">show</a>
+            <tr class="bg-white border-b">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ todoList.id }}</td>
+                <td class="text-sm text-gray-900 px-6 py-4 whitespace-nowrap">{{ todoList.name }}</td>
+                <td class="text-sm text-gray-900 px-6 py-4 whitespace-nowrap">{{ todoList.countTasks }}</td>
+                <td class="px-6 py-4 flex justify-end gap-2">
+                    <a class="font-bold py-2 px-4 rounded bg-blue-400 hover:bg-blue-500 text-white"
+                       href="{{ path('app_todo_list_show', {'id': todoList.id}) }}">{{ 'app.action.show'|trans }}</a>
 
                     {{ include('todo_list/_delete_form.html.twig') }}
                 </td>
             </tr>
         {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
+            <tr class="bg-white border-b">
+                <td class="text-sm text-gray-900 px-6 py-4 whitespace-nowrap" colspan="4">
+                    {{ 'app.todo_list.no_record'|trans }}
+                </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_todo_list_new') }}">Create new</a>
 {% endblock %}

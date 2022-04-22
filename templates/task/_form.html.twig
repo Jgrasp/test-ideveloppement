@@ -1,4 +1,7 @@
 {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+<div class="flex justify-between mt-4">
+    <a class="font-bold py-2 px-4 rounded bg-blue-400 hover:bg-blue-500 text-white" href="{{ path('app_todo_list_show', {'id' : task.list.id}) }}">{{ 'app.task.back'|trans }}</a>
+    <button class="font-bold py-2 px-4 rounded bg-green-700 hover:bg-green-800 text-white">{{ button_label|default('app.action.create'|trans) }}</button>
+</div>
 {{ form_end(form) }}

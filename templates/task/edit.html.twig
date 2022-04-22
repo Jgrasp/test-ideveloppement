@@ -1,12 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Task{% endblock %}
+{% block title %}{{ task.title }}{% endblock %}
 
 {% block body %}
-    <h1>Edit Task</h1>
-
-    {{ include('task/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_todo_list_show', { 'id' : task.list.id}) }}">back to list</a>
-
+    {{ include('task/_form.html.twig', {'button_label': 'app.action.update'|trans}) }}
 {% endblock %}

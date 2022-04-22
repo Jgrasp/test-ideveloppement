@@ -1,0 +1,32 @@
+app:
+  action:
+    show: Afficher
+    delete: Supprimer
+    create: Créer
+    update: Modifier
+  todo_list:
+    back: 'Retour aux listes'
+    title: 'Mes listes de tâches'
+    new_action: 'Créer une liste'
+    update_action: 'Modifier une liste'
+    no_record: 'Aucune liste existante'
+    id: 'Identifiant'
+    name: 'Nom'
+    tasks_number: 'Nombre de tâches'
+    options: 'Options'
+    remove_confirmation: 'Êtes-vous sûr de vouloir supprimer cette liste ?'
+  task:
+    id: 'Identifiant'
+    title: 'Titre'
+    done: 'Terminé'
+    is_done: 'Oui'
+    is_not_done: 'Non'
+    options: 'Options'
+    list: 'Mes tâches'
+    back: 'Retour à la liste'
+    no_record: 'Aucune tâche existante'
+    new_action: 'Créer une tâche'
+    mark_as_todo: 'A faire'
+    mark_as_done: 'Fait'
+    remove_tasks_action: 'Supprimer les tâches terminées'
+    remove_tasks_confirmation: 'Êtes-vous sûr de vouloir supprimer toutes les tâches terminées ?'

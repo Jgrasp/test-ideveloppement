@@ -1,11 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Task{% endblock %}
+{% block title %}{{ 'app.task.new_action'|trans }}{% endblock %}
 
 {% block body %}
-    <h1>Create new Task</h1>
-
     {{ include('task/_form.html.twig') }}
-
-    <a href="{{ path('app_todo_list_show', {'id' : list.id}) }}">back to list</a>
 {% endblock %}

@@ -25,6 +25,10 @@ tooling:
     description: Run Symfony commands
     cmd:
       - bin/console
+  theme:
+    service: node
+    cmd:
+      - yarn encore dev watch
   npm:
     service: node
   gulp:

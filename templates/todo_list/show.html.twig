@@ -1,77 +1,82 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}TodoList{% endblock %}
+{% block title %}{{ todoList.name }}{% endblock %}
 
 {% block body %}
-    <h1>TodoList</h1>
 
-    {{ form_start(form) }}
-    {{ form_row(form.name) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-    {{ form_end(form) }}
+    <div class="flex gap-4 mb-8">
+        {{ form_start(form, {'attr' : {'class' : 'flex justify-between w-full gap-4' }}) }}
+        {{ form_widget(form.name) }}
+        <button class="mt-1 font-bold py-2 px-4 rounded bg-orange-400 hover:bg-orange-500 text-white">{{ 'app.action.update'|trans }}</button>
+        {{ form_end(form) }}
+    </div>
 
+    <h2 class="text-center font-bold">{{ 'app.task.list'|trans }}</h2>
 
-    <table class="table">
-        <tbody>
+    <div class="flex justify-end gap-4">
+        <a class="font-bold py-2 px-4 rounded bg-green-700 hover:bg-green-800 text-white"
+           href="{{ path('app_task_new', { 'list' : todoList.id}) }}">{{ 'app.task.new_action'|trans }}</a>
+    </div>
+
+    <table class="min-w-full text-center my-8">
+        <thead class="border-b bg-blue-400">
         <tr>
-            <th>Id</th>
-            <td>{{ todoList.id }}</td>
-        </tr>
-        <tr>
-            <th>Name</th>
-            <td>{{ todoList.name }}</td>
-        </tr>
-        </tbody>
-    </table>
-
-    <h1>Task index</h1>
-
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Title</th>
-            <th>Done</th>
-            <th>actions</th>
+            <th scope="col" class="text-sm font-medium text-white px-6 py-4">{{ 'app.task.id'|trans }}</th>
+            <th scope="col" class="text-sm font-medium text-white px-6 py-4">{{ 'app.task.title'|trans }}</th>
+            <th scope="col" class="text-sm font-medium text-white px-6 py-4">{{ 'app.task.done'|trans }}</th>
+            <th scope="col" class="text-sm font-medium text-white px-6 py-4">{{ 'app.task.options'|trans }}</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody class="border-b">
         {% for task in todoList.tasks %}
-            <tr>
-                <td>{{ task.id }}</td>
-                <td>{{ task.title }}</td>
-                <td>{{ task.done ? 'Yes' : 'No' }}</td>
-                <td>
-                    <a href="{{ path('app_task_edit', {'list': task.list.id, 'id': task.id}) }}">edit</a>
+            <tr class="{% if task.done %}bg-green-700 text-white {% else %}bg-white{% endif %} border-b">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">{{ task.id }}</td>
+                <td class="text-sm px-6 py-4 whitespace-nowrap">{{ task.title }}</td>
+                <td class="text-sm px-6 py-4 whitespace-nowrap">
+                    {% if task.done %}
+                        {{ 'app.task.is_done'|trans }}
+                    {% else %}
+                        {{ 'app.task.is_not_done'|trans }}
+                    {% endif %}
+                </td>
+                <td class="px-6 py-4 flex justify-end gap-2">
+                    <a class="font-bold py-2 px-4 rounded bg-orange-400 hover:bg-orange-500 text-white"
+                       href="{{ path('app_task_edit', {'list': task.list.id, 'id': task.id}) }}">{{ 'app.action.update'|trans }}</a>
                     <form method="post"
                           action="{{ path('app_task_toggle_done', {'list': task.list.id, 'id': task.id}) }}">
                         <input name="_method" value="PUT" type="hidden">
                         <input type="hidden" name="_token" value="{{ csrf_token('toggleDone' ~ task.id) }}">
-                        <button type="submit">
+                        <button class="font-bold py-2 px-4 rounded {% if task.done %} bg-red-700 hover:bg-red-800{% else %}bg-green-700 hover:bg-green-800{% endif %} text-white"
+                                type="submit">
                             {% if task.done %}
-                                Mark as 'Todo'
+                                {{ 'app.task.mark_as_todo'|trans }}
                             {% else %}
-                                Mark as 'Done'
+                                {{ 'app.task.mark_as_done'|trans }}
                             {% endif %}
                         </button>
                     </form>
                 </td>
             </tr>
         {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
+            <tr class="bg-white border-b">
+                <td class="text-sm text-gray-900 px-6 py-4 whitespace-nowrap" colspan="4">
+                    {{ 'app.task.no_record'|trans }}
+                </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_task_new', { 'list' : todoList.id}) }}">Create new</a>
+    <div class="flex justify-between gap-4">
+        <a class="font-bold py-2 px-4 rounded bg-blue-400 hover:bg-blue-500 text-white"
+           href="{{ path('app_todo_list_index') }}">{{ 'app.todo_list.back'|trans }}</a>
+        <form method="post" action="{{ path('app_todo_list_delete_task_done', {'id': todoList.id}) }}"
+              onsubmit="return confirm('{{ 'app.task.remove_tasks_confirmation'|trans }}');">
+            <input name="_method" value="DELETE" type="hidden">
+            <input type="hidden" name="_token" value="{{ csrf_token('deleteDoneTasks') }}">
+            <button class="font-bold py-2 px-4 rounded bg-red-700 text-white hover:bg-red-800"
+                    type="submit">{{ 'app.task.remove_tasks_action'|trans }}</button>
+        </form>
+    </div>
 
-    <form method="post" action="{{ path('app_todo_list_delete_task_done', {'id': todoList.id}) }}">
-        <input name="_method" value="DELETE" type="hidden">
-        <input type="hidden" name="_token" value="{{ csrf_token('deleteDoneTasks') }}">
-        <button type="submit">Remove done tasks</button>
-    </form>
-
-    <a href="{{ path('app_todo_list_index') }}">back to list</a>
 {% endblock %}
