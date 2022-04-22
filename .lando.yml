@@ -12,7 +12,7 @@ services:
     scanner: false
   database:
     scanner: false
-    type: mariadb:10.3
+    type: mysql:8.0
     portforward: 49200
   node:
     type: node:14

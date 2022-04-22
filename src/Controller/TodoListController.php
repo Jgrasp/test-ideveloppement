@@ -10,10 +10,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/todo/list')]
 class TodoListController extends AbstractController
 {
+    private TranslatorInterface $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     #[Route('/', name: 'app_todo_list_index', methods: ['GET'])]
     public function index(TodoListRepository $todoListRepository): Response
     {
@@ -31,6 +39,9 @@ class TodoListController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $todoListRepository->add($todoList);
+
+            $this->addFlash('success', $this->translator->trans('app.action.create_successful'));
+
             return $this->redirectToRoute('app_todo_list_show', ['id' => $todoList->getId()], Response::HTTP_SEE_OTHER);
         }
 
@@ -59,6 +70,9 @@ class TodoListController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $todoListRepository->add($todoList);
+
+            $this->addFlash('success', $this->translator->trans('app.action.update_successful'));
+
             return $this->redirectToRoute('app_todo_list_show', ['id' => $todoList->getId()], Response::HTTP_SEE_OTHER);
         }
 
@@ -73,6 +87,8 @@ class TodoListController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$todoList->getId(), $request->request->get('_token'))) {
             $todoListRepository->remove($todoList);
+
+            $this->addFlash('success', $this->translator->trans('app.action.delete_successful'));
         }
 
         return $this->redirectToRoute('app_todo_list_index', [], Response::HTTP_SEE_OTHER);
@@ -83,6 +99,7 @@ class TodoListController extends AbstractController
     {
         if ($this->isCsrfTokenValid('deleteDoneTasks', $request->request->get('_token'))) {
             $taskRepository->removeDoneByList($todoList);
+            $this->addFlash('success', $this->translator->trans('app.task.remove_tasks_success'));
         }
 
         return $this->redirectToRoute('app_todo_list_show', ['id' => $todoList->getId()], Response::HTTP_SEE_OTHER);

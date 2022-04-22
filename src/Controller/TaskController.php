@@ -11,10 +11,18 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/todo/list/{list}/task')]
 class TaskController extends AbstractController
 {
+    private TranslatorInterface $translator;
+
+    public function __construct(TranslatorInterface $translator){
+
+        $this->translator = $translator;
+    }
+
     #[Route('/new', name: 'app_task_new', methods: ['GET', 'POST'])]
     public function new(TodoList $list, Request $request, TaskRepository $taskRepository): Response
     {
@@ -25,6 +33,8 @@ class TaskController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $taskRepository->add($task);
+
+            $this->addFlash('success', $this->translator->trans('app.action.create_successful'));
 
             return $this->redirectToTodoList($task->getList());
         }
@@ -45,6 +55,8 @@ class TaskController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $taskRepository->add($task);
 
+            $this->addFlash('success', $this->translator->trans('app.action.update_successful'));
+
             return $this->redirectToTodoList($task->getList());
         }
 
@@ -60,6 +72,8 @@ class TaskController extends AbstractController
         if ($this->isCsrfTokenValid('toggleDone'.$task->getId(), $request->request->get('_token'))) {
             $task->setDone(!$task->getDone());
             $taskRepository->add($task);
+
+            $this->addFlash('success', $this->translator->trans('app.action.update_successful'));
         }
 
         return $this->redirectToTodoList($task->getList());

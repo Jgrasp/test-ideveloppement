@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.alert{
+    @apply p-4;
+}
+
+.alert-success {
+    @apply bg-green-800 text-white;
+}
+
+.alert-error {
+    @apply bg-red-800 text-white;
+}

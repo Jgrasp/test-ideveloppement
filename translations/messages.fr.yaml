@@ -3,6 +3,9 @@ app:
     show: Afficher
     delete: Supprimer
     create: Créer
+    create_successful: 'Création réussie'
+    update_successful: 'Modification réussie'
+    delete_successful: 'Suppression réussie'
     update: Modifier
   todo_list:
     back: 'Retour aux listes'
@@ -29,4 +32,5 @@ app:
     mark_as_todo: 'A faire'
     mark_as_done: 'Fait'
     remove_tasks_action: 'Supprimer les tâches terminées'
+    remove_tasks_success: 'Les tâches ont été supprimé'
     remove_tasks_confirmation: 'Êtes-vous sûr de vouloir supprimer toutes les tâches terminées ?'
